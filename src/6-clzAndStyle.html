@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <div v-bind:class="classObject">111</div>
+</div>
+
+
+<div id="app2">
+    <div v-bind:class="classObject">222</div>
+</div>
+
+<!--v-bind:style 会自动添加浏览器前缀-webkit-/-moz-/-ms-   -->
+<div id="app3">
+    <div v-bind:style="styleObject">333</div>
+</div>
+
+<!--
+从 2.3.0 起你可以为 style 绑定中的属性提供一个包含多个值的数组，常用于提供多个带前缀的值.
+这样写只会渲染数组中最后一个被浏览器支持的值。在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 display: flex
+-->
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+<script>
+    // 1、Class 与 Style 绑定
+    //绑定class样式
+    //对象
+    var vm = new Vue({
+        el:"#app",
+        data: {
+            classObject:{
+                active: false,
+                'text-danger': true
+            }
+        },
+
+    });
+
+    //计算属性
+    var vm2 = new Vue({
+        el:"#app2",
+        data: {
+            isActive: true,
+            error: null
+        },
+        computed: {
+            classObject: function () {
+                return {
+                    active: this.isActive && !this.error,
+                    'text-danger': this.error && this.error.type === 'fatal'
+                }
+            }
+        }
+    });
+
+
+    //绑定内联样式
+    var vm3 = new Vue({
+        el:"#app3",
+        data: {
+            styleObject: {
+                color: 'red',
+                fontSize: '13px'
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

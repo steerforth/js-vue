@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <p>Original message: "{{ msg }}"</p>
+    <p>Computed reversed message: "{{ reversedMessage }}"</p>
+    <p>full name: "{{ fullName }}"</p>
+</div>
+
+<script>
+
+    var vm = new Vue({
+        el:"#app",
+        data: {
+            msg:'Hello',
+            firstName:'Lebron',
+            lastName:'James',
+        },
+        //计算属性是基于它们的响应式依赖进行缓存的。只在相关响应式依赖发生改变时它们才会重新求值
+        //比定义function开销小
+        computed: {
+            // 计算属性的 getter
+            reversedMessage: function () {
+                // `this` 指向 vm 实例
+                return this.msg.split('').reverse().join('')
+            },
+            fullName: {
+                // getter
+                get: function () {
+                    return this.firstName + ' ' + this.lastName
+                },
+                // setter
+                set: function (newValue) {
+                    var names = newValue.split(' ')
+                    this.firstName = names[0]
+                    this.lastName = names[names.length - 1]
+                }
+            }
+        },
+
+    });
+
+    console.log("full name:"+vm.fullName);
+
+    vm.fullName = 'kobe brown';
+
+    console.log("first name:"+vm.firstName);
+    console.log("last name:"+vm.lastName);
+</script>
+</body>
+</html>

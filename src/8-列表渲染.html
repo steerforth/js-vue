@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <!--v-for-->
+    <!--可以用 of 替代 in 作为分隔符-->
+    <!--遍历数组-->
+    <li v-for="(item, index) in items"  v-bind:key="item.id">
+        {{ item.message }}---{{index}}
+    </li>
+    <!--遍历对象-->
+    <li v-for="(value, key, index) in object">
+        {{ value }}---{{key}}---{{index}}
+    </li>
+
+    <!--计算-->
+    <li v-for="n in even(numbers)">{{ n }}</li>
+</div>
+<script>
+    // 1.列表渲染
+    var vm = new Vue({
+        el:"#app",
+        data: {
+            items: [
+                { message: 'Foo',id:'1' },
+                { message: 'Bar',id:'2' }
+            ],
+            object: {
+                title: 'How to do lists in Vue',
+                author: 'Jane Doe',
+                publishedAt: '2016-04-10'
+            },
+            numbers: [ 1, 2, 3, 4, 5 ]
+        },
+        methods: {
+            even: function (numbers) {
+                return numbers.filter(function (number) {
+                    return number % 2 === 0
+                })
+            }
+        }
+    });
+
+
+    //2.数组更新检测
+    vm.items.push({message: 'CCC',id:'3'})
+
+    //过滤数组
+    // vm.items = vm.items.filter(function (item) {
+    //     return item.message.match(/Foo/)
+    // })
+
+
+
+    // vm.items[1] = { message: 'CCC',id:'2' } // 不是响应性的
+    // vm.items.length = 3 // 不是响应性的
+    vm.$set(vm.items, 0, {message: 'AAA',id:'1'});
+    Vue.set(vm.items, 1, {message: 'BBB',id:'2'});
+
+
+
+    //3.对象新增属性
+    vm.object = Object.assign({}, vm.object, {
+        age: 27,
+        favoriteColor: 'Vue Green'
+    })
+
+
+        // <my-component
+        //     v-for="(item, index) in items"
+        //         v-bind:item="item"
+        //     v-bind:index="index"
+        //     v-bind:key="item.id"
+        // >
+        // </my-component>
+</script>
+</body>
+</html>

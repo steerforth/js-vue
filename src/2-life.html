@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    {{a}}
+</div>
+
+<script>
+
+    var vm = new Vue({
+        el:'#app',
+        data: {
+            a: 1
+        },
+        beforeCreate: function(){
+            //this.a无值
+            console.log('before create: ' + this.a)
+        },
+        created: function () {
+            // `this` 指向 vm 实例
+            console.log('a is create: ' + this.a)
+        },
+        beforeMount: function(){
+            console.log('before mount: ' + this.a)
+        },
+        //el被新创建的vm.$el替换 ，挂载成功
+        mounted: function(){
+            console.log('mounted: ' + this.a)
+        },
+        beforeUpdate: function(){
+            console.log('before update: ' + this.a)
+        },
+        updated: function () {
+            console.log('a is update: ' + this.a)
+        },
+        destroyed:function () {
+            console.log("a is destroyed");
+        }
+    });
+
+
+    vm.a = 4;
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <button-counter id ="my-btn"></button-counter>
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+</div>
+
+<div id ="app2" :style="{ fontSize: postFontSize + 'em' }">
+    <blog-post v-for="post in posts" v-bind:key="post.id"
+               v-bind:post="post" v-on:enlarge-text="postFontSize += $event"
+               v-on:ensmall-text="onSmallText"
+    ></blog-post>
+</div>
+
+<div id="app3">
+    <custom-input v-model="searchText"></custom-input>
+    <!--等价于<input v-bind:value="searchText" v-on:input="searchText = $event.target.value">-->
+</div>
+
+<div id="app4">
+    <alert-box>
+        Something bad happened.
+    </alert-box>
+</div>
+
+
+<!--动态组件vue的<component>  根据传入的参数，动态改变组件-->
+<!--<component v-bind:is="currentTabComponent"></component>-->
+<script>
+
+    //全局注册
+    //1.
+    Vue.component('button-counter', {
+        //data 必须是一个函数
+        data: function () {
+            return {
+                count: 0
+            }
+        },
+        template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+    })
+
+    //用id初始化
+    var vm = new Vue({ el: '#app' });
+
+    //2.
+    //子组件事件enlarge-text，使父类可以收到
+    //$emit方法
+    Vue.component('blog-post', {
+        props: ['post'],
+        template: '<div class="blog-post">\n' +
+            '      <h3>{{ post.title }}</h3>' +
+            '       <button v-on:click="$emit(\'enlarge-text\',0.1)">Enlarge text\n</button>\n' +
+            '       <button v-on:click="$emit(\'ensmall-text\',0.1)">Ensmall text\n</button>\n' +
+            '      <div v-html="post.content"></div>\n' +
+            '    </div>'
+    })
+
+    var vm2 = new Vue({
+        el: '#app2',
+        data: {
+            posts: [
+                { id: 1, title: 'My journey with Vue',content:'我是1111'},
+                { id: 2, title: 'Blogging with Vue' ,content:'我是2222'},
+                { id: 3, title: 'Why Vue is so fun' ,content:'我是3333'}
+            ],
+            postFontSize: 1
+        },
+        methods: {
+            onSmallText: function (value) {
+                this.postFontSize -= value
+            }
+        }
+    })
+
+
+
+    Vue.component('custom-input', {
+        props: ['value'],
+        template: ' <input\n' +
+            '      v-bind:value="value"\n' +
+            '      v-on:input="$emit(\'input\', $event.target.value)"\n' +
+            '    >'
+
+    })
+
+    var vm3= new Vue({
+        el: '#app3',
+        data: {
+            searchText:'你号'
+        },
+
+    })
+
+    //slot
+    Vue.component('alert-box', {
+        template: '<div class="demo-alert-box">\n' +
+            '      <strong>Error!</strong>\n' +
+            '      <slot></slot>\n' +
+            '    </div>'
+    })
+
+    var vm4= new Vue({
+        el: '#app4',
+        data: {
+
+        },
+
+    })
+
+</script>
+</body>
+</html>

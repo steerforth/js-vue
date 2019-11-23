@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    {{k}}
+</div>
+
+<script>
+    var msg = {"k":"1"};
+    //该方法会使 阻止修改现有的属性，也意味着响应系统无法再追踪变化
+    // Object.freeze(msg);
+
+    var vm = new Vue({
+        el:"#app",
+        data: msg
+    });
+
+    vm.$watch('k', function (newValue, oldValue) {
+        // 这个回调将在 `vm.k` 改变后调用
+        console.log("new:"+newValue+"  old:"+oldValue);
+    })
+
+
+    console.log("vm.k = msg.k  ==>"+(vm.k == msg.k));
+
+    vm.k = 3;
+    console.log("msg:"+msg.k);
+
+    msg.k = 4;
+    console.log("vm.k:" + vm.k);
+
+    console.log("vm.$data:"+JSON.stringify(vm.$data));
+
+    console.log("vm.$el = document.getElementById(\"app\") ===>"+(vm.$el ==document.getElementById("app")));
+
+
+
+</script>
+</body>
+</html>

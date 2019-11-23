@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <p>full name: "{{ fullName }}"</p>
+</div>
+
+<script>
+
+    var vm = new Vue({
+        el:"#app",
+        data: {
+            msg:'Hello',
+            firstName:'Lebron',
+            lastName:'James',
+            fullName:'aaa',
+        },
+        watch:{
+            firstName: function (val) {
+                this.fullName = val + ' ' + this.lastName
+            },
+            lastName: function (val) {
+                this.fullName = this.firstName + ' ' + val
+            }
+        }
+
+    });
+
+    vm.firstName = 'kobe';
+    vm.lastName = 'brown';
+</script>
+</body>
+</html>
