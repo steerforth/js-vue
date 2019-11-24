@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <parent></parent>
+</div>
+
+<div id="app2">
+    <parent2></parent2>
+</div>
+
+<div id="app3">
+  <parent3 @chData1="changeData1" @chData2="changeData2"></parent3>
+</div>
+
+<script>
+//1.v-model的自定义
+//自定义模板  一定要个父标签包裹！！
+//1.1普通版
+   var vm=new Vue({
+        el:"#app",
+        data:{
+            
+        },
+        components:{
+            "parent":{
+            		data() {
+				    return {
+				      sthGiveChild: '给你100块'
+				    };
+				},
+				methods: {
+				    turnBack(val) {
+				      this.sthGiveChild = val;
+				    }
+				},
+				//sthGiveChild变量由父组件传递给子组件；turnBack方法由子组件暴露出给父组件
+                template:`<div><p>我是父亲, 对儿子说： {{sthGiveChild}}</p>
+                <Child @returnBack="turnBack" :give="sthGiveChild"></Child></div>`,
+                components:{
+                    "Child":{
+	                    	props: {
+						    give: String
+						},
+						methods: {
+						    returnBackFn() {
+						      this.$emit('returnBack', '还你200块');
+						    }
+						},
+	                    template:`<div><p>我是儿子，父亲对我说： {{give}}</p>
+	  <a href="javascript:;" rel="external nofollow" @click="returnBackFn">回应</a></div>`,
+                    }
+                }
+            }
+        }
+   })
+    
+//1.2v-model版
+//v-model包含了父传递给子的 属性和方法，写法简洁，但是可读性差
+	var vm2=new Vue({
+        el:"#app2",
+        data:{
+            
+        },
+        components:{
+            "parent2":{
+            		data() {
+				    return {
+				      sthGiveChild: '给你100块'
+				    };
+				},
+				methods: {
+				    turnBack(val) {
+				      this.sthGiveChild = val;
+				    }
+				},
+				//sthGiveChild变量由父组件传递给子组件；turnBack方法由子组件暴露出给父组件
+                template:`<div><p>我是父亲, 对儿子说： {{sthGiveChild}}</p>
+                <Child v-model="sthGiveChild"></Child></div>`,
+                components:{
+                    "Child":{
+	                    	props: {
+						    give: String
+						},
+						model: {
+							//属性
+						    prop: 'give',
+						    //事件
+						    event: 'returnBack'
+						},
+						methods: {
+						    returnBackFn() {
+						      this.$emit('returnBack', '还你200块');
+						    }
+						},
+	                    template:`<div><p>我是儿子，父亲对我说： {{give}}</p>
+	  <a href="javascript:;" rel="external nofollow" @click="returnBackFn">回应</a></div>`,
+                    }
+                }
+            }
+        }
+   })
+	
+	
+	//2.原生事件绑定到组件
+	//由于v-on绑定的原生事件，组件的根节点标签不支持该事件的话(支持的标签被包裹在根节点里),v-on就失效了，
+	//所以就使用到了$listener
+	var vm3 = new Vue({
+        el:"#app3",
+         methods: {
+	      changeData1: function() {
+	        alert('change data1')
+	      },
+	       changeData2: function() {
+	        alert('change data2')
+	      },
+	    },
+        components:{
+            "parent3":{
+            		created:function(){
+            			console.log('--->'+this.$listeners);	
+            		},
+                template:`<div>
+        			传递一层：<p @click="$emit('chdata1')">子组件</p>
+	  			<p @click="$listeners.chdata1()">子组件</p>
+        			<Child v-on="$listeners"></Child>
+      			</div>`,
+                components:{
+                    "Child":{
+	                    template:`<div>
+        						传递二层：<p @click="$listeners.chdata2()">子组件</p> 
+      						</div>`,
+                    }
+                }
+            }
+        }
+   })
+</script>
+</body>
+</html>

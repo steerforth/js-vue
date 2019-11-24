@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+
+
+<script>
+	//1.混入
+	//可将任意组件混入
+	var mixin = {
+	  created:function(){
+	  	console.log('mixin created')
+	  },
+	  methods: {
+	    foo: function () {
+	      console.log('foo')
+	    },
+	    //冲突的方法
+	    conflicting: function () {
+	      console.log('from mixin')
+	    }
+	  }
+	}
+	
+	var vm = new Vue({
+	  mixins: [mixin],
+	  created:function(){
+	  	console.log('self created')
+	  },
+	  methods: {
+	    bar: function () {
+	      console.log('bar')
+	    },
+	    conflicting: function () {
+	      console.log('from self')
+	    }
+	  }
+	})
+	
+	vm.foo() // => "foo"
+	vm.bar() // => "bar"
+	vm.conflicting() // => "from self"
+	
+	
+	//2.全局混入
+	// 为自定义的选项 'myOption' 注入一个处理器。
+	Vue.mixin({
+	  created: function () {
+	    var myOption = this.$options.myOption
+	    if (myOption) {
+	      console.log(myOption)
+	    }
+	  }
+	})
+	
+	new Vue({
+	  myOption: 'hello!'
+	})
+	// => "hello!"
+	
+	
+	//3.自定义混入策略
+</script>
+</body>
+</html>

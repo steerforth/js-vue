@@ -53,7 +53,8 @@
 
     //2.
     //子组件事件enlarge-text，使父类可以收到
-    //$emit方法
+    //$emit方法 子组件触发父类的方法 相当于jq中的trigger
+    //this.$emit.('click')   相当于this.$parent.click()
     Vue.component('blog-post', {
         props: ['post'],
         template: '<div class="blog-post">\n' +
@@ -101,6 +102,7 @@
     })
 
     //slot
+    //组件内的内容，eg.Something bad happened.会被固定在slot的位置
     Vue.component('alert-box', {
         template: '<div class="demo-alert-box">\n' +
             '      <strong>Error!</strong>\n' +

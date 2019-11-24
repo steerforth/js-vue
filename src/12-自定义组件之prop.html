@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <parent v-bind:name="name" v-bind:age="age" v-bind:sex="sex"></parent>
+</div>
+
+<script>
+
+    
+    //prop验证
+	Vue.component('my-component', {
+		props: {
+			// 基础的类型检查 (`null` 匹配任何类型)
+			propA: Number,
+			// 多个可能的类型
+			propB: [String, Number],
+			// 必填的字符串
+			propC: {
+				type: String,
+				required: true
+			},
+			// 带有默认值的数字
+			propD: {
+				type: Number,
+				default: 100
+			},
+			// 带有默认值的对象
+			propE: {
+				type: Object,
+				// 对象或数组默认值必须从一个工厂函数获取
+				default: function() {
+					return {
+						message: 'hello'
+					}
+				}
+			},
+			// 自定义验证函数
+			propF: {
+				validator: function(value) {
+					// 这个值必须匹配下列字符串中的一个
+					return ['success', 'warning', 'danger'].indexOf(value) !== -1
+				}
+			}
+		}
+	})
+	
+	
+	//属性传递
+	//子组件获取到父类的name属性，孙组件可通过$attrs获取到子类中除了绑定的name属性外的其他属性值
+	//inheritAttrs  继承属性，可用于防止属性的覆盖重写
+	var grand = Vue.extend({
+        template:"<h1>我是孙子,继承属性:{{$attrs.age}}</h1>",
+    });
+	
+	var child = Vue.extend({
+		props:['name'],
+        template:"<h1>我是孩子,继承属性:{{name}}<grand1 v-bind='$attrs'></grand1></h1>",
+        components:{
+        		"grand1":grand
+        }
+    });
+	
+	Vue.component("parent",{
+		  props:[
+		  	'name','age','sex'
+		  ],
+          template:"<h1>我是父亲{{name}}-{{age}}-{{sex}}<child1 v-bind:name='name'  v-bind:age='age'></child1></h1>",
+          components:{
+              "child1":child
+          }
+     });
+     var vm= new Vue({
+        el: '#app',
+        data: {
+            name:'张三',
+		    age:'30',
+		    sex:'男'
+        },
+    })
+     
+
+//父子组件另一种写法
+//var vm=new Vue({
+//      el:"#box",
+//      data:{
+//          a:"aaa"
+//      },
+//      components:{
+//          "aaa":{
+//              template:"<h2>我是aaa</h2><bbb></bbb>",
+//              components:{
+//                  "bbb":{
+//                      template:"<h2>我是bbb</h2>",
+//                  }
+//              }
+//          }
+//      }
+// })
+</script>
+</body>
+</html>

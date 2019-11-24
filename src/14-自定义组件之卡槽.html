@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app1">
+  <Mydiv>
+    <h1 slot="content">Here might be a page Content</h1>
+    <!--//未具名的插槽-->
+    <h2>555</h2>
+  </Mydiv>
+</div>
+
+<br>
+
+<div id="app2">
+  <Mydiv2 v-bind:todos="todos">
+    		 <!-- 将 `slotProps` 定义为插槽作用域的名字 -->
+		  <template slot-scope="slotProps">
+		    <!-- 为待办项自定义一个模板，-->
+		    <!-- 通过 `slotProps` 定制每个待办项。-->
+		    <span v-if="slotProps.todo.flag">✓</span>
+		    {{ slotProps.todo.text }}
+		  </template>
+  </Mydiv2>
+</div>
+
+<script>
+	//1.slot
+	//slot可以替代组件标签里面的内容
+	
+	//2.具名插槽
+	var vm1 = new Vue({
+        el:"#app1",
+        components:{
+            "Mydiv":{
+                template:`<div class="container">
+                				<div>我是header</div>
+  							<div>
+    								<slot name="content"></slot>
+  							</div>
+  							<div>我是footer</div>
+  							<!--内容会被替换-->
+  							<slot>333</slot>
+						 </div>`,
+            }
+        }
+   })
+	
+	
+	//3.作用域插槽
+	var vm1 = new Vue({
+        el:"#app2",
+        data(){
+        		return {
+        			todos:[{'id':1,'text':'111','flag':true},
+        			{'id':2,'text':'222','flag':false},
+        			{'id':3,'text':'333','flag':true}],
+        		}
+        },
+        components:{
+            "Mydiv2":{
+            		props:['todos'],
+                template:`<ul>
+							  <li
+							    v-for="todo in todos"
+							    v-bind:key="todo.id"
+							  >
+							  <div>-----</div>
+							    <!-- 我们为每个 todo 准备了一个插槽，-->
+							    <!-- 将 todo 对象作为一个插槽的 prop 传入。-->
+							    <slot v-bind:todo="todo">
+							      <!-- 回退的内容 -->
+							      {{ todo.text }}
+							    </slot>
+							    <div>-----</div>
+							  </li>
+						</ul>`,
+            }
+        }
+   })
+</script>
+</body>
+</html>

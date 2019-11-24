@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+	
+<div id="app1">
+  <parent1>
+  </parent1>
+  <div>foo:{{foo}}</div>
+</div>
+
+<br><br>
+
+<div id="app2">
+	<!--ref为这个子组件赋予一个 ID 引用-->
+  <parent2 ref="pp">
+  </parent2>
+  <button v-on:click="biz">点我吧</button>
+</div>
+
+<br>
+
+<div id="app3">
+  <parent3>
+  </parent3>
+</div>
+<script>
+	//1.子组件访问父组件的属性和方法
+	//$root ,$parent
+	//对于 demo 或非常小型的有少量组件的应用来说这是很方便的
+	var vm1 = new Vue({
+         el:"#app1",
+         data:{
+         	foo:1
+         },
+         methods: {
+	      biz: function() {
+	        this.foo += 1;
+	      },
+	    },
+        components:{
+            "parent1":{
+            		methods:{
+            			clickme:function(){
+						console.log('parent--'+this.$root.foo);
+//						this.$root.foo = 5;
+						this.$root.biz();
+						console.log('after parent--'+this.$root.foo);
+            			}
+            		},
+                template:`<div>
+				<button v-on:click="clickme">点我</button>
+				<Child></Child>
+      			</div>`,
+                components:{
+                    "Child":{
+                    		methods:{
+		            			clickme2:function(){
+								console.log('child--'+this.$root.foo);
+//								this.$root.foo = 5;
+								this.$root.biz();
+								console.log('after child--'+this.$root.foo);
+		            			}
+		            		},
+	                    template:`<div>
+	                     <button v-on:click="clickme2">点我2</button>
+      						</div>`,
+                    }
+                }
+            }
+        }
+   })
+	
+	
+	//2.访问子组件实例或子元素
+	//$refs 只会在组件渲染完成之后生效，并且它们不是响应式的
+	var vm2 = new Vue({
+         el:"#app2",
+         methods: {
+	      biz: function() {
+	        this.$refs.pp.boo += 1;
+	      },
+	    },
+        components:{
+            "parent2":{
+            		data(){
+            			return {
+            				boo:2	
+            			}
+            		},
+                template:`<div>
+				<div>{{boo}}</div>
+      			</div>`,
+            }
+        }
+   })
+	
+	
+	//3.provide和inject, 
+	//provide由父类提供，inject可由子类拿到
+	var vm3 = new Vue({
+        el:"#app3",
+        data:{
+        		aaa:'bbb'
+        },
+        methods:{
+        		biz:function(){
+        			console.log('AAA');
+        		}
+        },
+        provide:function(){
+        		return {
+        			getAAA:this.aaa,
+        		}
+        },
+        components:{
+            "parent3":{
+            		data(){
+            			return {
+            				parentValue:this.getAAA
+            			}
+            		},
+            		inject:['getAAA'],
+                template:`<div>
+				<div>parentValue:{{parentValue}}</div>
+      			</div>`,
+            }
+        }
+   })
+</script>
+</body>
+</html>

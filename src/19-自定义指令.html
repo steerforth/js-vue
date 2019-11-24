@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+	<div id="app">
+		<input v-focus>
+		
+		<div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+	</div>
+	
+	
+<script>
+	//1.自定义指令
+	//定义v-focus
+	// 注册一个全局自定义指令 `v-focus`
+	Vue.directive('focus', {
+	  // 当被绑定的元素插入到 DOM 中时……
+	  inserted: function (el) {
+	    // 聚焦元素
+	    el.focus()
+	  }
+	})
+	
+	
+	
+	//2.获取参数
+	Vue.directive('demo', {
+	  bind: function (el, binding, vnode) {
+	    var s = JSON.stringify
+	    el.innerHTML =
+	      'name: '       + s(binding.name) + '<br>' +
+	      'value: '      + s(binding.value) + '<br>' +
+	      'expression: ' + s(binding.expression) + '<br>' +
+	      'argument: '   + s(binding.arg) + '<br>' +
+	      'modifiers: '  + s(binding.modifiers) + '<br>' +
+	      'vnode keys: ' + Object.keys(vnode).join(', ')
+	  }
+	})
+	
+	new Vue({
+	  el: '#app',
+	  data: {
+	    message: 'hello!'
+	  }
+	})
+</script>
+</body>
+</html>

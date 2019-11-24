@@ -17,7 +17,7 @@
     {{k}}
     <!--2.嵌入html标签-->
     <p>use mustaches:<span v-html="rawHtml"></span></p>
-    <!--3.v-bind 绑定元素的属性-->
+    <!--3.v-bind <绑定元素的属性>-->
     <!--绑定css样式-->
     <div v-bind:class="mystyle">我是样式</div>
     <div v-bind:id="dynamicId"></div>
@@ -33,7 +33,7 @@
 
     <!--5.v-if-->
     <p v-if="seen">现在你看到我了</p>
-    <!--6.v-on 用于监听 DOM 事件-->
+    <!--6.v-on <用于监听 DOM 事件>-->
     <!--v-on:click缩写@click-->
     <button v-on:click="doSomething">v-on点击{{item}}</button>
     <!--动态参数,等同于v-on:click    !!!eventname必须使用小写，因为浏览器会转化为小写-->
