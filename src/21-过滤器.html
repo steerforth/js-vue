@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+	<div id="app">
+        <!--采用lower过滤器-->
+		<MyDiv v-bind:content="content"></MyDiv>
+	</div>
+	
+	
+<script>
+	
+	new Vue({
+		el: '#app',
+        components:{
+            "Mydiv":{
+                data(){
+                    return {
+                        content:"AbcDEf"
+                    }
+                },
+                //过滤器
+                filters: {
+                    Upper: function (value) {
+                        return value.toUpperCase()
+                    },
+                    Lower: function (value) {
+                        return value.toLowerCase()
+                    }
+                },
+                template:`<div>我是内容:{{content|Lower}}</div>`,
+             }
+		}
+	})
+	
+
+</script>
+</body>
+</html>
