@@ -91,6 +91,54 @@
 	//3.2action 异步
 	store.dispatch('incrementAsyn');
 
+
+    //4.module 模块化
+    const moduleA = {
+        state: {
+            countA:111
+        },
+        mutations: {
+
+        },
+        actions: {
+
+        },
+        getters: {
+
+        }
+    }
+
+    const moduleB = {
+        state: {
+            countB:222
+        },
+        mutations: {
+
+        },
+        actions: {
+
+        },
+        getters: {
+
+        }
+    }
+
+    const storeAB = new Vuex.Store({
+        modules: {
+            a: moduleA,
+            b: moduleB
+        },
+        //提取module中的方法
+        getters:{
+            moduleAstate: state=>state.a.countA,
+            moduleBstate: state=>state.b.countB
+        }
+    })
+
+    console.log('moduleA.countA---->'+storeAB.state.a.countA);
+    console.log('moduleB.countB---->'+storeAB.state.b.countB);
+    console.log('storeAB Astate---->'+storeAB.getters.moduleAstate);
+    console.log('storeAB Bstate---->'+storeAB.getters.moduleBstate);
 </script>
 </body>
 </html>
