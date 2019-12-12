@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+    <script src="../js/vue-router.js"></script>
+</head>
+
+<body>
+	<div id="app">
+        <button @click="clickFoo">Go to Foo</button>
+        <button @click="clickBar">Go to Bar</button>
+        <p>
+            <!-- 使用 router-link 组件来导航. -->
+            <!-- 通过传入 `to` 属性指定链接. -->
+            <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+            <router-link to="/foo">Go to Foo</router-link>
+            <router-link to="/bar">Go to Bar</router-link>
+        </p>
+        <!-- 路由出口 -->
+        <!-- 路由匹配到的组件将渲染在这里 -->
+        <router-view></router-view>
+	</div>
+
+
+    <div id="app2">
+        <button @click="clickAoo">Go to Coo</button>
+        <button @click="clickBoo">Go to Boo</button>
+        <router-view></router-view>
+    </div>
+<script>
+
+	//一、基础路由
+	//1.定义路由组件
+    const Foo = { template: '<div>foo</div>' }
+    const Bar = { template: '<div>bar</div>' }
+
+    //2.定义路由
+    const routes = [
+        { path: '/foo', component: Foo ,name:'foooo' },
+        { path: '/bar', component: Bar ,name:'barrr'}
+    ]
+
+    //3.创建路由实例
+    const router = new VueRouter({
+        routes // （缩写）相当于 routes: routes
+    })
+
+
+    //4.挂载app
+    new Vue({
+        router,
+        methods:{
+            clickFoo:function (event) {
+                //路由跳转
+                this.$router.push({path:'/foo'});
+            },
+            clickBar:function (event) {
+                //路由跳转,以name
+                this.$router.push({name:'barrr'});
+                //this.$router.push({ name: 'distributesList', query: { ruleForm: this.ruleForm }})
+            }
+        }
+    }).$mount('#app')
+
+
+    /**
+     * 路由的跳转
+     * 1.this.$router.push(),这个方法会向history栈添加一个记录，点击后退会返回到上一个页面
+     * 2.this.$router.replace(),这个方法不会向history里面添加新的记录，点击返回，会跳转到上上一个页面
+     * 3.this.$router.go(n),类似 window.history.go(n)。n可为正数可为负数。
+     */
+
+
+        //二、动态路由,可传递参数
+    const User = {
+        template: '<div>User：{{ $route.params.id }}</div>',
+        //监听路由的变化
+        beforeRouteUpdate (to, from, next) {
+            // console.log('路由变化: to--:'+to+'  from--:'+'  next--:'+next)
+        }
+    }
+
+    const router2 = new VueRouter({
+        routes: [
+            // 动态路径参数 以冒号开头
+            { path: '/user/:id', component: User }
+        ]
+    })
+
+    new Vue({
+        router:router2,
+        methods: {
+            clickAoo: function (event) {
+                this.$router.push({path: '/user/Coo'});
+            },
+            clickBoo: function (event) {
+                //路由跳转,简写
+                this.$router.push('/user/Boo');
+            }
+        }
+    }).$mount('#app2')
+
+</script>
+</body>
+</html>
