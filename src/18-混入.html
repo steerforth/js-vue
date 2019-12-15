@@ -10,8 +10,12 @@
 
 <script>
 	//1.混入
-	//可将任意组件混入
+	//可将任意组件混入，提升组件可复用功能
+    //1.1数据对象合并,在和组件的数据发生冲突时以组件数据优先
+    //1.2钩子函数合并,将混合为一个数组，因此都将被调用。另外，混入对象的钩子将在组件自身钩子之前调用。
+    //1.3methods, components 和 directives合并,将被混合为同一个对象。两个对象键名冲突时，取组件对象的键值对。
 	var mixin = {
+	  //钩子函数都将被调用
 	  created:function(){
 	  	console.log('mixin created')
 	  },
@@ -35,6 +39,7 @@
 	    bar: function () {
 	      console.log('bar')
 	    },
+        //冲突时取组件的方法
 	    conflicting: function () {
 	      console.log('from self')
 	    }
