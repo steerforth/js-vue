@@ -33,10 +33,12 @@
             fullName: {
                 // getter
                 get: function () {
+					console.log("调用fullName的get方法");
                     return this.firstName + ' ' + this.lastName
                 },
                 // setter
                 set: function (newValue) {
+					console.log("调用fullName的set方法");
                     var names = newValue.split(' ')
                     this.firstName = names[0]
                     this.lastName = names[names.length - 1]
@@ -48,6 +50,7 @@
 
     console.log("full name:"+vm.fullName);
 
+	//更改fullName的值
     vm.fullName = 'kobe brown';
 
     console.log("first name:"+vm.firstName);
