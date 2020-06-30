@@ -41,6 +41,7 @@
 
 
     <div @click="click1">
+		<!-- 时间修饰符1.@click.stop阻止冒泡事件    2.@click.prevent 阻止事件的默认行为， 3.@keyup.enter 按键修饰符-->
         <div @click.stop="click2">click</div>
     </div>
 </div>
