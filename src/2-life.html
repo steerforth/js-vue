@@ -30,6 +30,9 @@
             console.log('before mount: ' + this.a)
         },
         //el被新创建的vm.$el替换 ，挂载成功
+		//编译好的HTML挂载到页面完成后执行的事件钩子
+		//一般做ajax请求获取数据进行数据初始化
+		//在整个实例只执行一次
         mounted: function(){
             console.log('mounted: ' + this.a)
         },
