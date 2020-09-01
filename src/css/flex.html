@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.box1{
+				background-color: red;
+			}
+			.box2{
+				background-color: yellow;
+			}
+			.box3{
+				background-color: green;
+			}
+			
+			#flex1{
+				display: flex;
+				background-color: black;
+				width: 120px;
+				height: 120px;
+				/* 1.设置主轴方向:是水平还是垂直 */
+				/* row:从左到右；row-reverse:从右到左；colunm:从上到下；column-reverse:从下到上 */
+				flex-direction: row-reverse;
+			}
+			#flex1 > div{
+				width: 30px;
+				height: 30px;
+			}
+			
+			#flex2{
+				display: flex;
+				background-color: black;
+				width: 70px;
+				height: 70px;
+				flex-direction: row-reverse;
+				/*2.设置换行方式*/
+				/*一行排不下处理方式:no-wrap:不换行(默认,会压缩按比例子类宽度);wrap换行,由上往下排布；wrap-reverse:由下往上排布*/
+				flex-wrap:nowrap;
+			}
+			#flex2 > div{
+				height: 30px;
+			}
+			
+			#flex3{
+				display: flex;
+				background-color: black;
+				width: 120px;
+				height: 120px;
+				flex-direction: row-reverse;
+				/* 3.定义了在主轴上的对齐方式，受主轴方向flex-direction影响 */
+				/*flex-start（默认值）：左对齐;flex-end：右对齐;center:居中;space-between：两端对齐，项目之间的间隔都相等;space-around：每个项目两侧的间隔相等;*/
+				justify-content:space-around;
+			}
+			#flex3 > div{
+				width: 30px;
+				height: 30px;
+			}
+			
+			
+			#flex4{
+				display: flex;
+				background-color: black;
+				width: 120px;
+				height: 120px;
+				flex-direction: row;
+				/*4.定义了在交叉轴(单轴）上的对齐方式*/
+				/*flex-start | flex-end | center | baseline | stretch*/
+				/*streth:未设置高度或高度为auto,会拉满整个容器*/
+				align-items:stretch;
+			}
+			#flex4 > div{
+				width: 30px;
+			}
+			
+			
+			#flex5{
+				display: flex;
+				background-color: black;
+				width: 120px;
+				height: 120px;
+				flex-flow: row wrap;
+				/*5.定义了多根轴线的对齐方式。如果项目只有一根轴线（即单行），该属性不起作用*/
+				/*flex-start | flex-end | center | space-between | space-around | stretch*/
+				align-content:space-around;
+			}
+			#flex5 > div{
+				width: 80px;
+				height: 30px;
+			}
+			
+			
+			#flex6{
+				display: flex;
+				background-color: black;
+				width: 120px;
+				height: 120px;
+				/*flex-direction 和 flex-wrap 属性的复合属性*/
+				flex-flow: row wrap;
+			}
+			#flex6 > div{
+				/*2.1数值越小，排序越靠前*/
+				/* order:1; */
+				/*2.2定义放大比例，默认为0;子元素的宽度和比容器和小的时候起作用*/
+				/* flex-grow:1; */
+				/*2.3定义缩小比例，默认为1;子元素的宽度和比容器和大的时候起作用*/
+				/* flex-shrink:1; */
+				/*2.4定义了在分配多余空间之前，项目占据的主轴空间;默认为auto*/
+				/* flex-basis:auto; */
+				/*2.5flex-grow, flex-shrink 和 flex-basis的简写;默认0 1 auto*/
+				/* flex:0 1 auto; */
+				/*2.6可覆盖align-items属性*/
+				/*auto | flex-start | flex-end | center | baseline | stretch;*/
+				/* align-self: auto; */
+				width: 10px;
+				height: 30px;
+			}
+			
+			#flex7{
+				display: flex;
+				background-color: black;
+				width: 120px;
+				min-height: 30px;
+				height: auto;
+				flex-flow: row wrap;
+				align-content:flex-start;
+				align-items: flex-start;
+			}
+			#flex7 > div{
+				width: 50px;
+				height: 30px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="flex1">
+			<div class="box1"></div> 
+			<div class="box2"></div> 
+			<div class="box3"></div> 
+		</div>
+		
+		<br>
+		
+		<div id="flex2">
+			<div class="box1" style="width: 10px;"></div> 
+			<div class="box2" style="width: 50px;"></div> 
+			<div class="box3" style="width: 30px;"></div> 
+		</div>
+		
+		<br>
+		
+		<div id="flex3">
+			<div class="box1"></div> 
+			<div class="box2"></div> 
+			<div class="box3"></div> 
+		</div>
+		
+		<br>
+		
+		<div id="flex4">
+			<div class="box1" style="height: auto;">1</div> 
+			<div class="box2" style="height: auto;">2</div> 
+			<div class="box3" style="height: auto;">3</div> 
+		</div>
+		
+		<br>
+		
+		<div id="flex5">
+			<div class="box1"></div> 
+			<div class="box2"></div> 
+			<div class="box3"></div> 
+		</div>
+		
+		<br>
+		
+		<div id="flex6">
+			<div class="box1" style="order:2;flex-grow: 2;"></div> 
+			<div class="box2" style="order:1;flex-grow: 1;"></div> 
+			<div class="box3" style="order:3;flex-grow: 2;"></div> 
+		</div>
+		
+		<br>
+		
+		<div id="flex7">
+			<div class="box1" ></div> 
+			<div class="box2" ></div> 
+			<div class="box3" ></div>
+			<div class="box4" style="background-color: blue;width: 10px;height: 30px;align-self:flex-end"></div> 
+		</div>
+	</body>
+</html>
